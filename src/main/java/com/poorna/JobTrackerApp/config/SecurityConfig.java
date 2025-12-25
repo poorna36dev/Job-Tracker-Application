@@ -14,27 +14,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.poorna.JobTrackerApp.service.CustomerUserDetails;
+import com.poorna.JobTrackerApp.filters.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthFilter)
+            throws Exception {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
                 .oauth2Client(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-                .addFilterBefore(null, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    @Bean
-    public CustomerUserDetails userDetailsService() {
-        return new CustomerUserDetails();
     }
 
     @Bean

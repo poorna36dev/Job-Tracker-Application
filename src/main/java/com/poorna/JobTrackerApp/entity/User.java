@@ -113,8 +113,4 @@ public class User implements UserDetails {
         return email;
     }
 
-    public UserDetails orElseThrow(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
-    }
 }
