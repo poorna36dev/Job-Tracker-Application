@@ -10,23 +10,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.poorna.JobTrackerApp.entity.JobApplication;
+import com.poorna.JobTrackerApp.entity.User;
 
 import jakarta.transaction.Transactional;
 
 @Repository
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
-    @Query("select j from JobApplication j where j.user.email = :email")
-    List<JobApplication> findAllByUserEmail(@Param("email") String email);
+    @Query("select j from JobApplication j where j.user = :user")
+    List<JobApplication> findAllByUser(@Param("user") User user);
 
     @Query("""
             select j
             from JobApplication j
             where j.id = :jobId
-            and j.user.email = :email
+            and j.user = :user
             """)
-    Optional<JobApplication> findByIdAndUserEmail(
+    Optional<JobApplication> findByIdAndUser(
             @Param("jobId") Long jobId,
-            @Param("email") String email);
+            @Param("user") User user);
 
     @Modifying
     @Transactional
@@ -34,10 +35,10 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
             delete
             from JobApplication j
             where j.id = :jobId
-            and j.user.email = :email
+            and j.user = :user
             """)
-    int deleteByIdAndUserEmail(
+    int deleteByIdAndUser(
             @Param("jobId") Long jobId,
-            @Param("email") String email);
+            @Param("user") User user);
 
 }

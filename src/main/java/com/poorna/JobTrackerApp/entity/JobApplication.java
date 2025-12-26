@@ -42,12 +42,6 @@ public class JobApplication {
     @Column(nullable = false)
     private LocalDate applicationDate;
 
-    @Column(length = 100)
-    private String source;
-
-    @Column(columnDefinition = "TEXT")
-    private String notes;
-
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -114,22 +108,7 @@ public class JobApplication {
         this.applicationDate = applicationDate;
     }
 
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
+    
     public Instant getCreatedAt() {
         return createdAt;
     }

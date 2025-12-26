@@ -32,10 +32,15 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String username;
     private String email;
     private String password;
     @Column(nullable = false)
-    private boolean isActive = true;
+    private boolean isActive;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -110,7 +115,17 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+   
 
 }
