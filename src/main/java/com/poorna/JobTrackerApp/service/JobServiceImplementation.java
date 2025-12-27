@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class JobServiceImplementation implements JobService {
-    private JobApplicationRepository jobRepository;
+    private JobApplicationRepository    jobRepository;
 
     public JobServiceImplementation(JobApplicationRepository jobRepository) {
         this.jobRepository = jobRepository;
@@ -26,8 +26,12 @@ public class JobServiceImplementation implements JobService {
         jobApplication.setCompanyName(dto.getCompany());
         jobApplication.setJobTitle(dto.getTitle());
         jobApplication.setStatus(dto.getStatus());
+        jobApplication.setDescription(dto.getDescription());
+        jobApplication.setLocation(dto.getLocation());
         jobApplication.setApplicationDate(LocalDate.now());
         jobApplication.setUser(user);
+        System.out.println(jobApplication.getDescription());
+        System.out.println(jobApplication.getLocation());
         return mapToDto(jobRepository.save(jobApplication));
     }
 
@@ -67,6 +71,8 @@ public class JobServiceImplementation implements JobService {
         response.setTitle(jobApplication.getJobTitle());
         response.setStatus(jobApplication.getStatus());
         response.setAppliedDate(jobApplication.getApplicationDate());
+        response.setDescription(jobApplication.getDescription());
+        response.setLocation(jobApplication.getLocation());
         return response;
     }
     

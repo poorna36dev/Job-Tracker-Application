@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping("/create")
-    public String postMethodName(@RequestBody UserRequest userRequest) {
+    public String createUser(@RequestBody UserRequest userRequest) {
 
         userService.createUser(userRequest);
         return "user created successfully";

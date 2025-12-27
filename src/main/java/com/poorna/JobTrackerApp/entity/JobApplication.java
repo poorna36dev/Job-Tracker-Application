@@ -1,127 +1,149 @@
-package com.poorna.JobTrackerApp.entity;
+    package com.poorna.JobTrackerApp.entity;
 
-import java.time.Instant;
-import java.time.LocalDate;
+    import java.time.Instant;
+    import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+    import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "job_applications")
-public class JobApplication {
+    import jakarta.persistence.Column;
+    import jakarta.persistence.Entity;
+    import jakarta.persistence.EnumType;
+    import jakarta.persistence.Enumerated;
+    import jakarta.persistence.FetchType;
+    import jakarta.persistence.GeneratedValue;
+    import jakarta.persistence.GenerationType;
+    import jakarta.persistence.Id;
+    import jakarta.persistence.JoinColumn;
+    import jakarta.persistence.ManyToOne;
+    import jakarta.persistence.PrePersist;
+    import jakarta.persistence.PreUpdate;
+    import jakarta.persistence.Table;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Entity
+    @Table(name = "job_applications")
+    public class JobApplication {
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @Column(nullable = false, length = 150)
-    private String companyName;
+        @ManyToOne(optional = false, fetch = FetchType.LAZY)
+        @JoinColumn(name = "user_id", nullable = false)
+        private User user;
 
-    @Column(nullable = false, length = 150)
-    private String jobTitle;
+        @Column(nullable = false, length = 150)
+        private String companyName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
-    private ApplicationStatus status = ApplicationStatus.APPLIED;
+        @Column(nullable = false, length = 150)
+        private String jobTitle;
 
-    @Column(nullable = false)
-    private LocalDate applicationDate;
+        @Enumerated(EnumType.STRING)
+        @Column(nullable = false, length = 30)
+        private ApplicationStatus status = ApplicationStatus.APPLIED;
 
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
+        @Column(nullable = false)
+        private LocalDate applicationDate;
 
-    @Column(nullable = false)
-    private Instant updatedAt;
+        @Column(nullable = false, updatable = false)
+        private Instant createdAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = Instant.now();
-        this.updatedAt = Instant.now();
+        @Column(nullable = false)
+        private Instant updatedAt;
+        @Column(name="description",nullable=false, length=1000)
+        @JsonProperty("description")
+        private String description;
+        @Column(name="location",nullable=false, length=100)
+        @JsonProperty("location")
+        private String location;
+        @PrePersist
+        protected void onCreate() {
+            this.createdAt = Instant.now();
+            this.updatedAt = Instant.now();
+        }
+
+        @PreUpdate
+        protected void onUpdate() {
+            this.updatedAt = Instant.now();
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        // getters and setters
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
+
+        public String getCompanyName() {
+            return companyName;
+        }
+
+        public void setCompanyName(String companyName) {
+            this.companyName = companyName;
+        }
+
+        public String getJobTitle() {
+            return jobTitle;
+        }
+
+        public void setJobTitle(String jobTitle) {
+            this.jobTitle = jobTitle;
+        }
+
+        public ApplicationStatus getStatus() {
+            return status;
+        }
+
+        public void setStatus(ApplicationStatus status) {
+            this.status = status;
+        }
+
+        public LocalDate getApplicationDate() {
+            return applicationDate;
+        }
+
+        public void setApplicationDate(LocalDate applicationDate) {
+            this.applicationDate = applicationDate;
+        }
+
+        
+        public Instant getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(Instant createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        public Instant getUpdatedAt() {
+            return updatedAt;
+        }
+
+        public void setUpdatedAt(Instant updatedAt) {
+            this.updatedAt = updatedAt;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+        public void setLocation(String location) {
+            this.location = location;
+        }
     }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = Instant.now();
-    }
-
-    // getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public ApplicationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ApplicationStatus status) {
-        this.status = status;
-    }
-
-    public LocalDate getApplicationDate() {
-        return applicationDate;
-    }
-
-    public void setApplicationDate(LocalDate applicationDate) {
-        this.applicationDate = applicationDate;
-    }
-
-    
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-}

@@ -11,8 +11,11 @@ import com.poorna.JobTrackerApp.service.JobServiceImplementation;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
+@EnableWebSecurity
 @RequestMapping("/jobs")
 public class JobController {
     private JobServiceImplementation jobServiceImplementation;
@@ -29,16 +33,23 @@ public class JobController {
         this.jobServiceImplementation = jobServiceImplementation;
     }
     @PostMapping("/create")
+    @PreAuthorize("hasRole('USER')")
     public JobResponse createJob(@RequestBody @Validated JobRequest jobRequest,@AuthenticationPrincipal User user) {
-        
         return jobServiceImplementation.createJob(jobRequest,user);
     }
     @GetMapping("/getJobs")
+    @PreAuthorize("hasRole('USER')")
     public List<JobResponse> getJobs(@AuthenticationPrincipal User user) {
         return jobServiceImplementation.getJobs(user);
     }
-    @PutMapping("/Update/{id}")
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('USER')")
     public JobResponse putMethodName(@PathVariable Long id, @RequestBody JobRequest jobRequest, @AuthenticationPrincipal User user) {
         return jobServiceImplementation.updateJob(id, jobRequest,user);
     } 
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public void deleteJob(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        jobServiceImplementation.deleteJob(id,user);
+    }
 }
