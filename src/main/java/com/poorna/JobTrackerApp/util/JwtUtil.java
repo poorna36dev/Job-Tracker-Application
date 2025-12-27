@@ -18,10 +18,10 @@ public class JwtUtil {
     private final SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
     private final long validityInMilliseconds = 3600000;
 
-    public String generateToken(String username) {
-
+    public String generateToken(UserDetails userDetails) {
+        String userName=userDetails.getUsername();
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userName)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + validityInMilliseconds))
                 .signWith(key, SignatureAlgorithm.HS256)
